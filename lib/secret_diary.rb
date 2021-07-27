@@ -1,37 +1,61 @@
 class SecretDiary
 
-  attr_accessor :status, :entries
+  attr_accessor :entries
   
   def initialize
-    status = "locked"
-    @status = status
+    @status = Status.new
     entries = []
     @entries = entries
   end
-  
-  def lock
-    @status = "locked"
-  end
-  
-  def unlock
-    @status = "unlocked"
-  end
+
+ def locked?
+  @status.locked?
+ end
+
+ def unlock
+  @status.unlock
+ end
+
+ def lock
+  @status.lock
+ end
+
 
   def add_entry(entry)
-    if @status == "unlocked"
+    if locked?
+      "error: unlock first"
+    else
       @entries << entry 
       entry
-    else
-      "error: unlock first"
     end
   end
 
   def get_entries
-    if @status == "unlocked"
-      @entries
-    else
+    if locked? 
       "error: unlock first"
+    else
+      @entries
     end
+  end
+
+end
+
+
+class Status 
+  def initialize
+    @locked = true
+  end
+  
+  def lock
+    @locked = true
+  end
+
+  def unlock
+    @locked = false
+  end
+
+  def locked?
+    @locked
   end
 
 end
